@@ -4,6 +4,7 @@ from flask import Flask, session, render_template, request
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from werkzeug.security import check_password_hash, generate_password_hash
 
 app = Flask(__name__)
 
@@ -25,6 +26,20 @@ db = scoped_session(sessionmaker(bind=engine))
 def index():
     return render_template("index.html")
 
-@app.route("/register")
+@app.route("/register", methods=["GET", "POST"])
 def register():
-    return render_template("register.html")
+    if request.method == "GET":
+        return render_template("register.html")
+    
+    else:
+        user = request.form.get("username")
+        pass1 = request.form.get("pass1")
+        pass2 = request.form.get("pass")
+
+        if pass1 != pass2:
+            return render_template("register.html", regMsg = "Your passwords didn't match, please try again")
+
+        if db.execute("SELECT * FROM users WHERE username = :username", {"username": user}).rowcount != 0:
+            return render_template("register.html", regMsg = "The username is already taken, please choose a different one")
+
+        
