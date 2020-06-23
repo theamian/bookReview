@@ -34,7 +34,7 @@ def register():
     else:
         user = request.form.get("username")
         pass1 = request.form.get("pass1")
-        pass2 = request.form.get("pass")
+        pass2 = request.form.get("pass2")
 
         if pass1 != pass2:
             return render_template("register.html", regMsg = "Your passwords didn't match, please try again")
@@ -42,4 +42,9 @@ def register():
         if db.execute("SELECT * FROM users WHERE username = :username", {"username": user}).rowcount != 0:
             return render_template("register.html", regMsg = "The username is already taken, please choose a different one")
 
-        
+        hpass = generate_password_hash(pass1)
+
+        db.execute("INSERT INTO users (username, password) VALUES (:username, :password)", {"username": user, "password": hpass})
+        db.commit()
+
+        return render_template("index.html", indexMsg = "You have successfully registered for our site! Please log in")
