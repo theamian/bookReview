@@ -1,0 +1,11 @@
+a, a:hover, a:active, a:visited {
+    color: inherit;
+}
+
+#navcol2 {
+    text-align: end;
+}
+
+#navrow > div > a {
+    padding: 0 10px;
+}
