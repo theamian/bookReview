@@ -9,3 +9,7 @@ a, a:hover, a:active, a:visited {
 #navrow > div > a {
     padding: 0 10px;
 }
+
+#indexMainRow {
+    height: 100vh;
+}
