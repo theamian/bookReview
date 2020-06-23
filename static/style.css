@@ -13,3 +13,22 @@ a, a:hover, a:active, a:visited {
 #indexMainRow {
     height: 100vh;
 }
+
+#indexMainRow > div > h1 {
+    text-align: center;
+}
+
+#regTitleRow {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#regFormRow input {
+    display: block;
+    margin: 2px;
+}
+
+#regFormRow input[type="submit"] {
+    width: 50%;
+    margin: 10px auto;
+}
