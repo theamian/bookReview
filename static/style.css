@@ -18,17 +18,19 @@ a, a:hover, a:active, a:visited {
     text-align: center;
 }
 
-#regTitleRow, #loginTitleRow {
+.titleRow {
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-#regFormRow input, #loginFormRow input {
+.formRow input {
     display: block;
     margin: 2px;
 }
 
-#regFormRow input[type="submit"], #loginFormRow input[type="submit"] {
+.formRow input[type="submit"], .formRow select {
     width: 50%;
     margin: 10px auto;
+    text-align: center;
+    display: block;
 }
