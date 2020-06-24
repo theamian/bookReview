@@ -31,20 +31,24 @@ def register():
     if request.method == "GET":
         return render_template("register.html")
     
-    else:
-        user = request.form.get("username")
-        pass1 = request.form.get("pass1")
-        pass2 = request.form.get("pass2")
+    
+    user = request.form.get("username")
+    pass1 = request.form.get("pass1")
+    pass2 = request.form.get("pass2")
 
-        if pass1 != pass2:
-            return render_template("register.html", regMsg = "Your passwords didn't match, please try again")
+    if pass1 != pass2:
+        return render_template("register.html", regMsg = "Your passwords didn't match, please try again")
 
-        if db.execute("SELECT * FROM users WHERE username = :username", {"username": user}).rowcount != 0:
-            return render_template("register.html", regMsg = "The username is already taken, please choose a different one")
+    if db.execute("SELECT * FROM users WHERE username = :username", {"username": user}).rowcount != 0:
+        return render_template("register.html", regMsg = "The username is already taken, please choose a different one")
 
-        hpass = generate_password_hash(pass1)
+    hpass = generate_password_hash(pass1)
 
-        db.execute("INSERT INTO users (username, password) VALUES (:username, :password)", {"username": user, "password": hpass})
-        db.commit()
+    db.execute("INSERT INTO users (username, password) VALUES (:username, :password)", {"username": user, "password": hpass})
+    db.commit()
 
-        return render_template("index.html", indexMsg = "You have successfully registered for our site! Please log in")
+    return render_template("index.html", indexMsg = "You have successfully registered for our site! Please log in")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    return render_template("login.html")
