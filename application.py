@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -24,7 +24,10 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if not session["id"]:
+        return render_template("index.html")
+
+    return render_template("index.html", indexMsg = f"Welcome, {session['username']}!")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -61,4 +64,11 @@ def login():
 
     if row is None or not check_password_hash(row["password"], pass1):
         return render_template("login.html", loginMsg = "Invalid username and/or password")
+
+    session["id"] = row["id"]
+    session["username"] = user
+
+    return redirect("/")
+
+
     

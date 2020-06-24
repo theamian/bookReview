@@ -6,7 +6,7 @@ a, a:hover, a:active, a:visited {
     text-align: end;
 }
 
-#navrow > div > a {
+#navrow > div > a, #navrow > div > span {
     padding: 0 10px;
 }
 
