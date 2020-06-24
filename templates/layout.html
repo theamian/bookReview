@@ -15,7 +15,11 @@
                 <a href="{{ url_for('index') }}">home</a> | <a href="#">search</a>
             </div>
             <div class="col-2" id="navcol2">
-                <a href="#">log in</a> | <a href="{{ url_for('register') }}">register</a>
+                {% if session["id"] is none %}
+                <a href="{{ url_for('login') }}">log in</a> | <a href="{{ url_for('register') }}">register</a>
+                {% else %}
+                <span>{{ session["username"] }}</span> | <a href="#">log out</a>
+                {% endif %}
             </div>
         </div>
     </nav>

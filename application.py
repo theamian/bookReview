@@ -1,6 +1,6 @@
 import os
 
-from flask import Flask, session, render_template, request
+from flask import Flask, session, render_template, request, redirect
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -24,27 +24,51 @@ db = scoped_session(sessionmaker(bind=engine))
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    if not session["id"]:
+        return render_template("index.html")
+
+    return render_template("index.html", indexMsg = f"Welcome, {session['username']}!")
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
     
-    else:
-        user = request.form.get("username")
-        pass1 = request.form.get("pass1")
-        pass2 = request.form.get("pass2")
+    
+    user = request.form.get("username")
+    pass1 = request.form.get("pass1")
+    pass2 = request.form.get("pass2")
 
-        if pass1 != pass2:
-            return render_template("register.html", regMsg = "Your passwords didn't match, please try again")
+    if pass1 != pass2:
+        return render_template("register.html", regMsg = "Your passwords didn't match, please try again")
 
-        if db.execute("SELECT * FROM users WHERE username = :username", {"username": user}).rowcount != 0:
-            return render_template("register.html", regMsg = "The username is already taken, please choose a different one")
+    if db.execute("SELECT * FROM users WHERE username = :username", {"username": user}).rowcount != 0:
+        return render_template("register.html", regMsg = "The username is already taken, please choose a different one")
 
-        hpass = generate_password_hash(pass1)
+    hpass = generate_password_hash(pass1)
 
-        db.execute("INSERT INTO users (username, password) VALUES (:username, :password)", {"username": user, "password": hpass})
-        db.commit()
+    db.execute("INSERT INTO users (username, password) VALUES (:username, :password)", {"username": user, "password": hpass})
+    db.commit()
 
-        return render_template("index.html", indexMsg = "You have successfully registered for our site! Please log in")
+    return render_template("index.html", indexMsg = "You have successfully registered for our site! Please log in")
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "GET":
+        return render_template("login.html")
+    
+    user = request.form.get("username")
+    pass1 = request.form.get("pass1")
+
+    row = db.execute("SELECT * FROM users WHERE username = :username", {"username": user}).fetchone()
+
+    if row is None or not check_password_hash(row["password"], pass1):
+        return render_template("login.html", loginMsg = "Invalid username and/or password")
+
+    session["id"] = row["id"]
+    session["username"] = user
+
+    return redirect("/")
+
+
+    
