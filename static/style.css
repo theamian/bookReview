@@ -37,7 +37,7 @@ a, a:hover, a:active, a:visited {
 
 .result_card {
     width: 90%;
-    margin: auto;
+    margin: 5px auto;
     padding: 10px;
     border-radius: 5px;
     box-shadow: 2px 2px 2px 2px gray;
@@ -50,4 +50,8 @@ a, a:hover, a:active, a:visited {
     margin-bottom: 20px;
     display: flex;
     align-items: flex-end;
+}
+
+.card_link, .card_link:hover, .card_link:active, .card_link:visited {
+    text-decoration: none;
 }

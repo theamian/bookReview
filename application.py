@@ -103,6 +103,9 @@ def search():
 
     results = db.execute(order).fetchall()
 
+    if len(results) == 0:
+        return render_template("search.html", searchMsg = "Hmm, we weren't able to find anything")
+
     return render_template("results.html", results = results)
 
     
