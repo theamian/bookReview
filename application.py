@@ -113,7 +113,7 @@ def search():
     return render_template("results.html", results = results)
 
 
-@app.route("/book/<isbn>")
+@app.route("/book/<isbn>", methods=["GET", "POST"])
 @login_required
 def book(isbn):
 
@@ -129,4 +129,14 @@ def book(isbn):
     goodreads = pull.json()
     gr_book = goodreads["books"][0]
 
-    return render_template("book.html", book = book, gr_book = gr_book)
+    num_ratings_order = text(f"SELECT COUNT(rating) FROM books JOIN ratings ON ratings.book_id = books.book_id WHERE isbn = '{isbn}'")
+    avg_rating_order = text(f"SELECT AVG(rating) FROM books JOIN ratings ON ratings.book_id = books.book_id WHERE isbn = '{isbn}'")
+
+    num_ratings = db.execute(num_ratings_order).fetchone()
+    avg_rating = db.execute(avg_rating_order).fetchone()
+
+    print(book["book_id"])
+    print(session["id"])
+
+    if request.method == "GET":
+        return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating)
