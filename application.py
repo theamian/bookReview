@@ -1,4 +1,5 @@
 import os
+import requests
 
 from flask import Flask, session, render_template, request, redirect
 from flask_session import Session
@@ -13,6 +14,10 @@ app = Flask(__name__)
 # Check for environment variable
 if not os.getenv("DATABASE_URL"):
     raise RuntimeError("DATABASE_URL is not set")
+
+# Check for environment variable
+if not os.getenv("GR_API"):
+    raise RuntimeError("GR_API is not set")
 
 # Configure session to use filesystem
 app.config["SESSION_PERMANENT"] = False
@@ -118,6 +123,10 @@ def book(isbn):
     if book is None:
         return render_template("search.html", searchMsg = "An error occured, please try again")
 
-    #TODO goodreads API integration
+    gr_key = os.getenv("GR_API")
+    pull = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key":gr_key, "isbns":book["isbn"]})
 
-    return render_template("book.html", book = book)
+    goodreads = pull.json()
+    gr_book = goodreads["books"][0]
+
+    return render_template("book.html", book = book, gr_book = gr_book)

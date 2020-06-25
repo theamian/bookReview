@@ -89,7 +89,7 @@ a, a:hover, a:active, a:visited {
     box-shadow: 2px 2px 2px 2px gray;
     min-width: 45%; /* overrides a previous min-width:50% */
     min-height: 20vh;
-    margin: 0 5px;
+    margin: 22px 5px;
 }
 
 .rightColLeft h2, .rightColRight h2 {
