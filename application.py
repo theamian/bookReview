@@ -107,3 +107,9 @@ def search():
         return render_template("search.html", searchMsg = "Hmm, we weren't able to find anything")
 
     return render_template("results.html", results = results)
+
+
+@app.route("/book/<isbn>")
+@login_required
+def book(isbn):
+    return "TODO"

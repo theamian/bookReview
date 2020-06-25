@@ -8,7 +8,7 @@
 </div>
 
 {% for result in results %}
-<a href="#" class="card_link">
+<a href="{{ url_for('book', isbn = result["isbn"]) }}" class="card_link">
 <div class="result_card">
 title: <span>{{ result["title"] }}</span> | author: <span>{{ result["author"] }}</span> | year: <span>{{ result["year"] }}</span>
 </div>
