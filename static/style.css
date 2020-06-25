@@ -55,3 +55,7 @@ a, a:hover, a:active, a:visited {
 .card_link, .card_link:hover, .card_link:active, .card_link:visited {
     text-decoration: none;
 }
+
+.result_card span {
+    font-weight: bold;
+}
