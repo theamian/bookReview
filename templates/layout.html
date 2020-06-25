@@ -12,7 +12,7 @@
     <nav>
         <div class="row justify-content-between" id="navrow">
             <div class="col-2">
-                <a href="{{ url_for('index') }}">home</a> | <a href="#">search</a>
+                <a href="{{ url_for('index') }}">home</a> | <a href="{{ url_for('search')}}">search</a>
             </div>
             <div class="col-2" id="navcol2">
                 {% if not "id" in session %}

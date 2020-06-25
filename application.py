@@ -4,7 +4,9 @@ from flask import Flask, session, render_template, request, redirect
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
+from functools import wraps
 
 app = Flask(__name__)
 
@@ -21,6 +23,15 @@ Session(app)
 engine = create_engine(os.getenv("DATABASE_URL"))
 db = scoped_session(sessionmaker(bind=engine))
 
+# https://flask.palletsprojects.com/en/1.0.x/patterns/viewdecorators/
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if session.get("id") is None:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
+
 
 @app.route("/")
 def index():
@@ -29,12 +40,12 @@ def index():
 
     return render_template("index.html", indexMsg = f"Welcome, {session['username']}!")
 
+
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "GET":
         return render_template("register.html")
-    
-    
+        
     user = request.form.get("username")
     pass1 = request.form.get("pass1")
     pass2 = request.form.get("pass2")
@@ -51,6 +62,7 @@ def register():
     db.commit()
 
     return render_template("index.html", indexMsg = "You have successfully registered for our site! Please log in")
+
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -70,10 +82,30 @@ def login():
 
     return redirect("/")
 
+
 @app.route("/logout")
 def logout():
     session.clear()
     return redirect("/")
 
+
+@app.route("/search", methods=["GET", "POST"])
+@login_required
+def search():
+    if request.method == "GET":
+        return render_template("search.html")
+
+    filter = request.form.get("filter")
+    query = request.form.get("query").lower()
+    like_query = "'%" + query + "%'"
+
+    order = text(f"SELECT * FROM books where lower({filter}) LIKE {like_query}")
+
+    results = db.execute(order).fetchall()
+
+    if len(results) == 0:
+        return render_template("search.html", searchMsg = "Hmm, we weren't able to find anything")
+
+    return render_template("results.html", results = results)
 
     

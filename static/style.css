@@ -18,17 +18,40 @@ a, a:hover, a:active, a:visited {
     text-align: center;
 }
 
-#regTitleRow, #loginTitleRow {
+.titleRow {
     margin-top: 20px;
     margin-bottom: 20px;
 }
 
-#regFormRow input, #loginFormRow input {
+.formRow input {
     display: block;
     margin: 2px;
 }
 
-#regFormRow input[type="submit"], #loginFormRow input[type="submit"] {
+.formRow input[type="submit"], .formRow select {
     width: 50%;
     margin: 10px auto;
+    text-align: center;
+    display: block;
+}
+
+.result_card {
+    width: 90%;
+    margin: 5px auto;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px gray;
+}
+
+.result_title {
+    height: 12vh;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+}
+
+.card_link, .card_link:hover, .card_link:active, .card_link:visited {
+    text-decoration: none;
 }
