@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}search{% endblock %}
+
+{% block body %}
+
+<div class="row justify-content-center titleRow">
+    <h2>{{ searchMsg or "Search by ISBN, title, author or year" }}</h2>
+</div>
+<div class="row align-items-center justify-content-center flex-column formRow">
+    <form action="{{ url_for('search')}}" method="POST">
+        <select name="filter">
+            <option value="isbn">ISBN</option>
+            <option value="title">title</option>
+            <option value="author">author</option>
+            <option value="year">year</option>
+        </select>
+        <br>
+        <input type="text" name="query" placeholder="search query" required />
+        <input type="submit" value="Search" />
+    </form>
+</div>
+
+{% endblock %}

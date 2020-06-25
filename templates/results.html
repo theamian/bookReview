@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}results{% endblock%}
+
+{% block body %}
+<div class="result_title">
+    <h1>Here is what we could find:</h1>
+</div>
+
+{% for result in results %}
+<a href="#" class="card_link">
+<div class="result_card">
+title: <span>{{ result["title"] }}</span> | author: <span>{{ result["author"] }}</span> | year: <span>{{ result["year"] }}</span>
+</div>
+</a>
+{% endfor %}
+
+
+{% endblock %}
