@@ -5,7 +5,7 @@ from flask import Flask, session, render_template, request, redirect
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.sql import text
+from sqlalchemy.sql import text, func
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 
@@ -134,9 +134,11 @@ def book(isbn):
 
     num_ratings = db.execute(num_ratings_order).fetchone()
     avg_rating = db.execute(avg_rating_order).fetchone()
+    
+    review_order = text(f"SELECT * FROM users JOIN ratings ON users.id = ratings.user_id JOIN books ON ratings.book_id = books.book_id WHERE books.isbn = '{isbn}'")
+    reviews = db.execute(review_order).fetchall()
 
-    print(book["book_id"])
-    print(session["id"])
+    print(reviews[0]["time"]) 
 
     if request.method == "GET":
-        return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating)
+        return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating, reviews = reviews)
