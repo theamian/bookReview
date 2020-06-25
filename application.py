@@ -100,7 +100,6 @@ def search():
     like_query = "'%" + query + "%'"
 
     order = text(f"SELECT * FROM books where lower({filter}) LIKE {like_query}")
-
     results = db.execute(order).fetchall()
 
     if len(results) == 0:
@@ -112,4 +111,13 @@ def search():
 @app.route("/book/<isbn>")
 @login_required
 def book(isbn):
-    return "TODO"
+
+    order = text(f"SELECT * FROM books WHERE isbn = '{isbn}'")
+    book = db.execute(order).fetchone()
+
+    if book is None:
+        return render_template("search.html", searchMsg = "An error occured, please try again")
+
+    #TODO goodreads API integration
+
+    return render_template("book.html", book = book)
