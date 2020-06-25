@@ -4,6 +4,7 @@ from flask import Flask, session, render_template, request, redirect
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
+from sqlalchemy.sql import text
 from werkzeug.security import check_password_hash, generate_password_hash
 from functools import wraps
 
@@ -93,6 +94,17 @@ def logout():
 def search():
     if request.method == "GET":
         return render_template("search.html")
+
+    filter = request.form.get("filter")
+    query = request.form.get("query").lower()
+    like_query = "'%" + query + "%'"
+
+    order = text(f"SELECT * FROM books where lower({filter}) LIKE {like_query}")
+
+    results = db.execute(order).fetchall()
+
+    for row in results:
+        print(row["year"])
 
     return "TODO"
 
