@@ -104,7 +104,7 @@ def search():
     results = db.execute(order).fetchall()
 
     for row in results:
-        print(row["year"])
+        print(row["year"]) # just a test, and it works!
 
     return "TODO"
 
