@@ -34,3 +34,20 @@ a, a:hover, a:active, a:visited {
     text-align: center;
     display: block;
 }
+
+.result_card {
+    width: 90%;
+    margin: auto;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px gray;
+}
+
+.result_title {
+    height: 12vh;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: flex-end;
+}

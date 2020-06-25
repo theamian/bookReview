@@ -103,9 +103,6 @@ def search():
 
     results = db.execute(order).fetchall()
 
-    for row in results:
-        print(row["year"]) # just a test, and it works!
-
-    return "TODO"
+    return render_template("results.html", results = results)
 
     
