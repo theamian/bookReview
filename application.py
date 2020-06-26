@@ -138,7 +138,4 @@ def book(isbn):
     review_order = text(f"SELECT * FROM users JOIN ratings ON users.id = ratings.user_id JOIN books ON ratings.book_id = books.book_id WHERE books.isbn = '{isbn}'")
     reviews = db.execute(review_order).fetchall()
 
-    print(reviews[0]["time"]) 
-
-    if request.method == "GET":
-        return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating, reviews = reviews)
+    return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating, reviews = reviews)

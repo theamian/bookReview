@@ -118,3 +118,24 @@ a, a:hover, a:active, a:visited {
 .review_card .timeSpan {
     font-style: italic;
 }
+
+.reviewRow {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    width: 55%;
+    margin: auto;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    box-shadow: 2px 2px 2px 2px gray;
+    padding: 5px;
+}
+
+.reviewRow * {
+    margin: 5px auto;
+}
+
+.reviewRow textarea {
+    width: 50vw;
+    border-radius: 5px;
+}
