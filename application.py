@@ -123,6 +123,11 @@ def book(isbn):
     if book is None:
         return render_template("search.html", searchMsg = "An error occured, please try again")
 
+    if db.execute("SELECT * FROM ratings WHERE user_id = :user_id", {"user_id": session["id"]}).rowcount == 0:
+        past = False
+    else:
+        past = True
+
     gr_key = os.getenv("GR_API")
     pull = requests.get("https://www.goodreads.com/book/review_counts.json", params={"key":gr_key, "isbns":book["isbn"]})
 
@@ -138,4 +143,4 @@ def book(isbn):
     review_order = text(f"SELECT * FROM users JOIN ratings ON users.id = ratings.user_id JOIN books ON ratings.book_id = books.book_id WHERE books.isbn = '{isbn}'")
     reviews = db.execute(review_order).fetchall()
 
-    return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating, reviews = reviews)
+    return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating, reviews = reviews, past = past)

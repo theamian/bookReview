@@ -27,7 +27,7 @@
     </div>
 </div>
 
-<div class="reviewRow">
+<div class="reviewRow" {% if past == True %}style="display:none;"{% endif %}>
     <form action="{{ url_for('book', isbn = book['isbn']) }}" method="POST">
         <select name="rating" required>
             <option hidden disabled selected value>-- select your rating --</option>
