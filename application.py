@@ -1,7 +1,7 @@
 import os
 import requests
 
-from flask import Flask, session, render_template, request, redirect
+from flask import Flask, session, render_template, request, redirect, jsonify
 from flask_session import Session
 from sqlalchemy import create_engine
 from sqlalchemy.orm import scoped_session, sessionmaker
@@ -139,7 +139,7 @@ def book(isbn):
 
     num_ratings = db.execute(num_ratings_order).fetchone()
     avg_rating = db.execute(avg_rating_order).fetchone()
-    
+
     review_order = text(f"SELECT * FROM users JOIN ratings ON users.id = ratings.user_id JOIN books ON ratings.book_id = books.book_id WHERE books.isbn = '{isbn}'")
     reviews = db.execute(review_order).fetchall()
 
@@ -153,3 +153,23 @@ def book(isbn):
         return redirect(f"/book/{book['isbn']}")
 
     return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating, reviews = reviews, past = past)
+
+@app.route("/api/<isbn>")
+def api(isbn):
+
+    book = db.execute("SELECT * FROM books WHERE isbn = :isbn", {"isbn":isbn}).fetchone()
+
+    if book is None:
+        return jsonify({"error":"ISBN not in database"}), 404
+    
+    review_count = db.execute("SELECT COUNT(review) FROM ratings WHERE book_id = :book_id", {"book_id":book["book_id"]}).fetchone()
+    avg_rating = db.execute("SELECT AVG(rating) FROM ratings WHERE book_id = :book_id", {"book_id":book["book_id"]}).fetchone()
+
+    return jsonify({
+        "title":book["title"],
+        "author":book["author"],
+        "year":book["year"],
+        "isbn":book["isbn"],
+        "review_count":review_count[0],
+        "average_score":avg_rating[0]
+    })

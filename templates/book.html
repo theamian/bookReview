@@ -15,8 +15,8 @@
         <div class="row bookRightRow">
             <div class="col-2 rightColLeft">
                 <h2>project1 users</h2>
-                <p>number of ratings: {{ "{:,}".format(num_ratings[0]) }}</p>
-                <p>average rating: {{ "{:.03}".format(avg_rating[0]) }}</p>
+                <p>number of ratings: {% if num_ratings[0] is none %} 0 {% else %} {{ "{:,}".format(num_ratings[0]) }} {% endif %}</p>
+                <p>average rating: {% if avg_rating[0] is none %} 0 {% else %} {{ "{:.03}".format(avg_rating[0]) }} {% endif %}</p>
             </div>
             <div class="col-2 rightColRight">
                 <h2>Goodreads users</h2>
