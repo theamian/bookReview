@@ -66,7 +66,7 @@ def register():
     db.execute("INSERT INTO users (username, password) VALUES (:username, :password)", {"username": user, "password": hpass})
     db.commit()
 
-    return render_template("index.html", indexMsg = "You have successfully registered for our site! Please log in")
+    return render_template("login.html", loginMsg = "You have successfully registered for our site! Please log in below")
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -142,5 +142,14 @@ def book(isbn):
     
     review_order = text(f"SELECT * FROM users JOIN ratings ON users.id = ratings.user_id JOIN books ON ratings.book_id = books.book_id WHERE books.isbn = '{isbn}'")
     reviews = db.execute(review_order).fetchall()
+
+    if request.method == "POST":
+        rating = request.form.get("rating")
+        review = request.form.get("review")
+
+        db.execute("INSERT INTO ratings (rating, review, user_id, book_id) VALUES (:rating, :review, :user_id, :book_id)", {"rating":rating, "review":review, "user_id":session["id"], "book_id":book["book_id"]})
+        db.commit()
+
+        return redirect(f"/book/{book['isbn']}")
 
     return render_template("book.html", book = book, gr_book = gr_book, num_ratings = num_ratings, avg_rating = avg_rating, reviews = reviews, past = past)

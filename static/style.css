@@ -106,12 +106,13 @@ a, a:hover, a:active, a:visited {
 .review_card {
     width: 80%;
     margin: auto;
+    margin-bottom: 10px;
     border-radius: 5px;
     box-shadow: 2px 2px 2px 2px gray;
     padding: 5px;
 }
 
-.review_card .userSpan {
+.review_card .userSpan, .review_card .ratingSpan {
     font-weight: bold;
 }
 
@@ -119,6 +120,9 @@ a, a:hover, a:active, a:visited {
     font-style: italic;
 }
 
+.review_card p {
+    margin-bottom: 5px;
+}
 .reviewRow {
     display: flex;
     justify-content: center;

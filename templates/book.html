@@ -42,8 +42,7 @@
             <option value="5">5</option>
         </select>
         <br>
-        <textarea placeholder="what did you think of {{ book['title'] }}?">
-        </textarea>
+        <textarea name="review" placeholder="what did you think of {{ book['title'] }}?"></textarea>
         <br>
         <input type="submit" value="Submit!">
     </form>
@@ -52,8 +51,9 @@
 {% for review in reviews %}
 <div class="review_card">
     <p>user: <span class="userSpan">{{ review["username"] }}</span></p>
+    <p>rating: <span class="ratingSpan">{{ review["rating"] }}</span></p>
     <p>time: <span class="timeSpan">{{ review["time"] }}</span></p>
-    <p>{{ review["review"] }}</p>
+    <p class="reviewText">{{ review["review"] }}</p>
 </div>
 {% endfor %}
 
