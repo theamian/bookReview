@@ -2,3 +2,4 @@ API.txt
 __pycache__/
 flask_session/
 .pylintrc
+books.csv
