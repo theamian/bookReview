@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ book["title"] }}{% endblock%}
+
+{% block body %}
+
+<div class="row bookMainRow">
+    <div class="col-2 bookLeftCol">
+        <h1>{{ book["title"] }}</h1>
+        <h2>{{ book["author"] }}</h2>
+        <h3>{{ book["year"] }}</h3>
+        <p>ISBN: {{ book["isbn"] }}</p>
+    </div>
+    <div class="col-2 bookRightCol">
+        <div class="row bookRightRow">
+            <div class="col-2 rightColLeft">
+                <h2>project1 users</h2>
+                <p>number of ratings: {{ "{:,}".format(num_ratings[0]) }}</p>
+                <p>average rating: {{ "{:.03}".format(avg_rating[0]) }}</p>
+            </div>
+            <div class="col-2 rightColRight">
+                <h2>Goodreads users</h2>
+                <p>number of ratings: {{ "{:,}".format(gr_book["work_ratings_count"]) }}</p>
+                <p>average rating: {{ gr_book["average_rating"] }}</p>
+            </div>
+        </div> 
+    </div>
+</div>
+
+{% for review in reviews %}
+<div class="review_card">
+    <p>user: <span class="userSpan">{{ review["username"] }}</span></p>
+    <p>time: <span class="timeSpan">{{ review["time"] }}</span></p>
+    <p>{{ review["review"] }}</p>
+</div>
+{% endfor %}
+
+
+{% endblock %}
